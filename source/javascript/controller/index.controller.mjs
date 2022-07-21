@@ -16,6 +16,7 @@ class IndexController {
     #privateUser;
     #privateRickAndMortyURL;
     #privateView;
+    #RickAndMortyService
 
     constructor() {
         this.#privateRickAndMortyURL = Config.RickAndMortyAPI_URL;
@@ -23,13 +24,14 @@ class IndexController {
         this.#privateUser.Name = "Julian";
         this.#privateUser.Lastname = "Lasso";
         this.#privateView = new IndexView();
+        this.#RickAndMortyService = new RickAndMortyService(this.#privateRickAndMortyURL)
     }
 
     async init() {
-        const data = new RickAndMortyService(this.#privateRickAndMortyURL);
-        this.#privateView.init(this.#privateUser.toString(), await data.getCharacters());
+        const characters = await this.#RickAndMortyService.characters
+        this.#privateView.init( characters);
     }
 }
 
-export const index = new IndexController();
+const index = new IndexController();
 index.init();
